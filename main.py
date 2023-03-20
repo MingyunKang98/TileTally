@@ -16,5 +16,5 @@ if __name__ == '__main__':
 print("hello junsang")
 print("hello mingyun")
 print("hello, Wooseok")
-print("junsang")
+print("junsang이는 바보")
 
