@@ -75,7 +75,7 @@ while True:
                     cv2.line(line_img, (x - 20, y), (x + 20, y), (0, 0, 255), 2)
                     cv2.line(line_img, (x, y - 20), (x, y + 20), (0, 0, 255), 2)
 
-        # 이미지 합치기 단계입니다.
+        # 이미지 합치기 단계
         result_img = np.concatenate((img_out, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR), line_img), axis=1)
         cv2.imshow('Result', result_img)
 
