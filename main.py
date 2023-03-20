@@ -15,9 +15,6 @@ if __name__ == '__main__':
 
 print("hello junsang")
 print("hello mingyun")
-<<<<<<< HEAD
-print("junsang")
-=======
 print("hello, Wooseok")
->>>>>>> 41ac68a044fd80de7f61e4ab6d96c8ed7fa5b59c
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print("junsang")
+
