@@ -225,9 +225,3 @@ def show_result() :
     plt.show()
     plt.close()
 
-cv2.namedWindow('img')
-cv2.setMouseCallback('img',mouse_handler)
-cv2.imshow('img',src_img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-print()
