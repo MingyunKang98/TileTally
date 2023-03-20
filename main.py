@@ -15,4 +15,5 @@ if __name__ == '__main__':
 
 print("hello junsang")
 print("hello mingyun")
+print("junsang")
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
