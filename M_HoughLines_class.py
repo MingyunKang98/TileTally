@@ -1,5 +1,6 @@
 import cv2
 import matplotlib.pyplot as plt
+import numpy as np
 
 class InteractivePlot:
     def __init__(self, img_dir):
@@ -10,6 +11,7 @@ class InteractivePlot:
         self.line, = self.ax.plot(self.xdata, self.ydata)
         self.cid = self.fig.canvas.mpl_connect('button_press_event', self.add_point)
         self.ax.set_aspect('auto', adjustable='box')
+
         plt.imshow(cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB))
 
     def add_point(self, event):
@@ -34,9 +36,29 @@ class InteractivePlot:
 
     def show(self):
         plt.show()
+    class coord:
+        def __init__(self):
+            self.x = np.array(InteractivePlot.xdata)
+            self.y = np.array(InteractivePlot.ydata)
+            self.xy = np.stack((self.x, self.y), axis=1)
+
+        # def coord_sort():
+        #     x = np.array(x)
+        #     k = x[:, 0]
+        #     s = k.argsort()
+        #     centers_sorted = x[s]
+        #     for i in range(len(centers_sorted) // 2):
+        #         b = centers_sorted[2 * i:2 * (i + 1), :]
+        #         k = b[:, 1]
+        #         s = k.argsort()
+        #         centers_sorted[2 * i:2 * (i + 1), :] = b[s]
+        #     return centers_sorted
+
 
 if __name__ == "__main__":
     dir = "./Base01.jpg"
     plot = InteractivePlot(dir)
     plot.show()
     print(plot.xdata)
+    print(plot.ydata)
+    print(plot.coord)
