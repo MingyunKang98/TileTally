@@ -16,7 +16,7 @@ import math
 
 
 point_list = []
-src_img = cv2.imread('img/tile8.jpg')
+src_img = cv2.imread('tile8.jpg')
 src_img
 width = 1000
 height = 800
@@ -230,3 +230,4 @@ cv2.setMouseCallback('img',mouse_handler)
 cv2.imshow('img',src_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+print()
