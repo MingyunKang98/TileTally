@@ -6,7 +6,7 @@ tile이미지 불러오기 0
 intersection 0
 intersection 거리
 넓이
-'''
+'''기
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
