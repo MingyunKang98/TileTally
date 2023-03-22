@@ -6,7 +6,7 @@ tile이미지 불러오기 0
 intersection 0
 intersection 거리
 넓이
-'''기
+'''
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -227,7 +227,7 @@ def show_result() :
 
 cv2.namedWindow('img')
 cv2.setMouseCallback('img',mouse_handler)
-cv2.imshow('img',src_img)
+cv2.imshow('img', src_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 print()
