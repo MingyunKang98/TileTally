@@ -15,16 +15,7 @@ import sys
 import math
 
 
-point_list = []
-src_img = cv2.imread('img/tile8.jpg')
-src_img
-width = 1000
-height = 800
 
-color = (255,0,255)
-thickness = 3
-drawing = False
-des_img = None
 
 def mouse_handler(event, x,y,flags,param) :
     global drawing, des_img
@@ -47,7 +38,7 @@ def mouse_handler(event, x,y,flags,param) :
             cv2.line(des_img,prev_point,next_point,color, thickness,cv2.LINE_AA)
             show_result()
 
-    cv2.imshow('img',des_img)
+    # cv2.imshow('img',des_img)
 
 
 def show_result() :
@@ -225,9 +216,19 @@ def show_result() :
     plt.show()
     plt.close()
 
-cv2.namedWindow('img')
-cv2.setMouseCallback('img',mouse_handler)
-cv2.imshow('img',src_img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-print()
+if __name__ == "__main__":
+    dir = "./Base01.jpg"
+    point_list = []
+    src_img = cv2.imread(dir)
+    width = 1000
+    height = 800
+    color = (255,0,255)
+    thickness = 3
+    drawing = False
+    des_img = None
+    cv2.namedWindow('img')
+    cv2.setMouseCallback('img',mouse_handler)
+    cv2.imshow('img',src_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    print(des_img)
