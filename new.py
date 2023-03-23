@@ -351,7 +351,7 @@ if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
 
 
 
-btile = ud_btile + rl_btile +
+btile = ud_btile + rl_btile
 print("가로 줄 수 :",num_horizon)
 print('세로 줄 수 :',round(num_vertical))
 print("교차점 수 :",len(new_coordinates))
