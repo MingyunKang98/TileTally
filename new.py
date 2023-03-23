@@ -353,13 +353,27 @@ if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
         rl_btile = (num_horizon - 1)
 
 # 구석 조각 맞추기
-# if aver_x[0] + (width - aver_x[-1]) < aver_w and aver_y[0] + (height - aver_y[-1]) :   # 구석 조각을 온장 하나로 나눌 수 있는 경우
-#     an_btile = 1
 
+if aver_x[0] + (width - aver_x[-1]) < aver_w/2 and aver_y[0] + (height - aver_y[-1]) < aver_h/2:   # 구석 조각을 온장 하나로 나눌 수 있는 경우
+    an_btile = 1
+
+elif aver_x[0] > aver_w / 2 and (width - aver_x[-1]) > aver_w / 2 and aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 : # 구석 조각이 한장씩 필요한 경우
+    an_btile = 4
+
+elif (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and (aver_y[0] > aver_h/2 or (height - aver_y[-1]) > aver_h/2)) \
+        or (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and (aver_x[0] > aver_w/2 or (width - aver_x[-1]) > aver_w/2)):
+    an_btile = 3
+
+else :
+    an_btile = 2
+
+
+print(an_btile)
 print(ud_btile)
 print(rl_btile)
 
-btile = ud_btile + rl_btile
+btile = ud_btile + rl_btile + an_btile
+
 print("가로 줄 수 :",num_horizon)
 print('세로 줄 수 :',round(num_vertical))
 print("교차점 수 :",len(new_coordinates))
@@ -369,6 +383,7 @@ print('타일 평균너비 :',aver_w)
 print('타일 평균면적 :',aver_area)
 print('깨지지 않은 타일 수 :',whole_tile)
 print('모아서 만들 수 있는 타일 수 :',btile)
+print('총 사용 타일 수 :',whole_tile + btile )
 print(aver_x)
 print(aver_y)
 cv2.imshow('intersection', img)
