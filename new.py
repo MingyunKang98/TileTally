@@ -223,7 +223,7 @@ new_coordinates = []
 for coord in coordinates:
     similar = False
     for k in similar_coordinates:
-        if math.sqrt((coord[0][0] - k[0]) ** 2 + (coord[0][1] - k[1]) ** 2) <= 100:
+        if math.sqrt((coord[0][0] - k[0]) ** 2 + (coord[0][1] - k[1]) ** 2) <= 50:
             similar_coordinates[k].append(coord)
             similar = True
             break
@@ -278,21 +278,91 @@ for j in range(0,num_horizon):
 # 규칙성 있는 x,y 좌표
 sorted_xy = sorted(sorted_x, key=lambda x: (x[0][0], x[0][1]))
 
-# 타일 넓이 구하기
-tile_h = math.sqrt((sorted_xy[0][0][0] -sorted_xy[1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[1][0][1]) ** 2)
-for i in range(len(sorted_xy)):
-    if np.abs(sorted_xy[i + 1][0][0] - sorted_xy[i][0][0]) >= 20:
-        tile_w = math.sqrt((sorted_xy[0][0][0] -sorted_xy[i+1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[i+1][0][1]) ** 2)
-        break
-area = tile_h * tile_w
+# 평균 타일 넓이 구하기
+# tile_h = math.sqrt((sorted_xy[0][0][0] -sorted_xy[1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[1][0][1]) ** 2)
+# for i in range(len(sorted_xy)):
+#     if np.abs(sorted_xy[i + 1][0][0] - sorted_xy[i][0][0]) >= 20:
+#         tile_w = math.sqrt((sorted_xy[0][0][0] -sorted_xy[i+1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[i+1][0][1]) ** 2)
+#         break
+sum_w = 0
+sum_h = 0
+for i in range(1,len(aver_x)):
+    sum_w += aver_x[i] - aver_x[i-1]
+aver_w = round(sum_w / (num_vertical-1))
 
+for i in range(1,len(aver_y)):
+    sum_h += aver_y[i] - aver_y[i-1]
+aver_h = round(sum_h / (num_horizon-1))
+
+aver_area = aver_h * aver_w
+whole_tile = (num_vertical-1)*(num_horizon-1)
+
+
+### 위 아래 조각 맞추기
+if aver_y[0] < 10 and (height-aver_y[-1]) < 10 :    # 가장 윗줄 아랫줄에 쪼개진 타일 없는경우
+    ud_btile = 0
+
+elif aver_y[0] > 10 and (height-aver_y[-1]) < 10 :   # 위쪽만 있을경우
+    if  aver_y[0] > aver_h / 2 :
+        ud_btile = num_vertical -1
+    else:
+        ud_btile = round((num_vertical -1)/2)
+
+elif aver_y[0] < 10 and (height-aver_y[-1]) > 10 : # 아래만 있을경우
+    if (height-aver_y[-1]) > aver_h / 2:
+        ud_btile = num_vertical - 1
+    else:
+        ud_btile = round((num_vertical - 1) / 2)
+
+if aver_y[0] > 10 and (height-aver_y[-1]) > 10 :    # 둘 다 있을경우
+    if  aver_y[0] > aver_h / 2 and (height-aver_y[-1]) > aver_h / 2:
+        ud_btile = (num_vertical-1)*2
+    else :  #aver_y[0] > aver_h / 2 and (height-aver_y[-1]) < aver_h / 2:
+        ud_btile = (num_vertical - 1)
+
+# 좌,우 조각 맞추기
+if aver_x[0] < 10 and (width-aver_x[-1]) < 10 :    # 왼쪽줄, 오른쪽줄 에 쪼개진 타일 없는경우
+    rl_btile = 0
+
+elif aver_x[0] > 10 and (width-aver_x[-1]) < 10 :   # 위쪽만 있을경우
+    if  aver_x[0] > aver_w / 2 :
+        rl_btile = num_horizon -1
+    else:
+        rl_btile = round((num_horizon -1)/2)
+
+elif aver_x[0] < 10 and (width-aver_x[-1]) > 10 : # 아래만 있을경우
+    if (width-aver_x[-1]) > aver_w / 2:
+        rl_btile = num_horizon - 1
+    else:
+        rl_btile = round((num_horizon - 1) / 2)
+
+if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
+    if  aver_x[0] > aver_w / 2 and (width-aver_x[-1]) > aver_w / 2:
+        rl_btile = (num_horizon-1)*2
+    else :  #aver_y[0] > aver_h / 2 and (height-aver_y[-1]) < aver_h / 2:
+        rl_btile = (num_horizon - 1)
+
+# 구석 조각 맞추기
+
+
+
+
+
+
+
+
+btile = ud_btile + rl_btile +
 print("가로 줄 수 :",num_horizon)
 print('세로 줄 수 :',round(num_vertical))
 print("교차점 수 :",len(new_coordinates))
 print(sorted_xy)
-print("타일 높이 :",tile_h)
-print('타일 너비 :',tile_w)
-print('타일 면적 :',area)
+print("타일 평균높이 :",aver_h)
+print('타일 평균너비 :',aver_w)
+print('타일 평균면적 :',aver_area)
+print('깨지지 않은 타일 수 :',whole_tile)
+print('모아서 만들 수 있는 타일 수 :',btile)
+print(aver_x)
+print(aver_y)
 cv2.imshow('intersection', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
