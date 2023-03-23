@@ -127,7 +127,7 @@ def drawLines(img, lines, color=(0,0,255)):
             cv2.line(img, (x1,y1), (x2,y2), color, 1)
 
 point_list = []
-src_img = cv2.imread('img/tile23.jpg')
+src_img = cv2.imread('img/tile8.jpg')
 width = 1000
 height = 800
 color = (0,255,255)
@@ -223,7 +223,7 @@ new_coordinates = []
 for coord in coordinates:
     similar = False
     for k in similar_coordinates:
-        if math.sqrt((coord[0][0] - k[0]) ** 2 + (coord[0][1] - k[1]) ** 2) <= 50:
+        if math.sqrt((coord[0][0] - k[0]) ** 2 + (coord[0][1] - k[1]) ** 2) <= 100:
             similar_coordinates[k].append(coord)
             similar = True
             break
@@ -242,7 +242,9 @@ for point in new_coordinates:
     cv2.line(img, (pt[0] - length, pt[1]), (pt[0] + length, pt[1]), (255, 0, 255), 5)
 
 ## 수직선, 수평선 개수
-sorted_x = sorted(new_coordinates, key=lambda x: (x[0][0], x[0][1]))
+sorted_x = sorted(new_coordinates, key=lambda x: (x[0][0], x[0][1]))  # x 좌표 오름차순 정렬
+sorted_y = sorted(new_coordinates, key=lambda x: x[0][1])             # y 좌표 오름차순 정렬
+
 for i in range(len(sorted_x)):
     if np.abs(sorted_x[i + 1][0][0] - sorted_x[i][0][0]) >= 50:
         num_horizon = i +1
@@ -250,9 +252,9 @@ for i in range(len(sorted_x)):
         break
 
 ## 동일 수직선 상의 x 좌표 평균으로 통합
-k=0
 aver_x = []
-for j in range(0,num_vertical):
+for j in range(num_vertical):
+    k = 0
     for i in range(j*num_horizon,(j+1)*num_horizon):
         k += sorted_x[i][0][0]
     aver_x.append(round(k/num_horizon))
@@ -261,9 +263,22 @@ for j in range(0,num_vertical):
     for i in range(j*num_horizon,(j+1)*num_horizon):
         sorted_x[i][0][0] = aver_x[j]
 
-## y 좌표 오름차순 정렬
+## 동일 수평선상 y좌표 평균으로 통합
+aver_y = []
+for j in range(0,num_horizon):
+    k = 0
+    for i in range(j*num_vertical,(j+1)*num_vertical):
+        k += sorted_y[i][0][1]
+    aver_y.append(round(k/num_vertical))
+
+for j in range(0,num_horizon):
+    for i in range(j*num_vertical,(j+1)*num_vertical):
+        sorted_y[i][0][1] = aver_y[j]
+
+# 규칙성 있는 x,y 좌표
 sorted_xy = sorted(sorted_x, key=lambda x: (x[0][0], x[0][1]))
 
+# 타일 넓이 구하기
 tile_h = math.sqrt((sorted_xy[0][0][0] -sorted_xy[1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[1][0][1]) ** 2)
 for i in range(len(sorted_xy)):
     if np.abs(sorted_xy[i + 1][0][0] - sorted_xy[i][0][0]) >= 20:
@@ -276,7 +291,7 @@ print('세로 줄 수 :',round(num_vertical))
 print("교차점 수 :",len(new_coordinates))
 print(sorted_xy)
 print("타일 높이 :",tile_h)
-print('타일 너비 : ',tile_w)
+print('타일 너비 :',tile_w)
 print('타일 면적 :',area)
 cv2.imshow('intersection', img)
 cv2.waitKey(0)
