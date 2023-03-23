@@ -315,8 +315,12 @@ elif aver_y[0] < 10 and (height-aver_y[-1]) > 10 : # 아래만 있을경우
         ud_btile = round((num_vertical - 1) / 2)
 
 if aver_y[0] > 10 and (height-aver_y[-1]) > 10 :    # 둘 다 있을경우
-    if  (aver_y[0] > aver_h / 2 and (height-aver_y[-1]) > aver_h / 2) or aver_y[0] + (height-aver_y[-1]) > aver_h+5:
+    if  (aver_y[0] > aver_h / 2 and (height-aver_y[-1]) > aver_h / 2) and aver_y[0] + (height-aver_y[-1]) > aver_h+5:
         ud_btile = (num_vertical-1)*2
+
+    elif ((aver_y[0] > aver_h / 2 and (height-aver_y[-1]) < aver_h / 2)) or ((aver_y[0] < aver_h / 2 and (height-aver_y[-1]) > aver_h / 2)):
+        ud_btile = (num_vertical-1) + round((num_vertical-1)/2)
+
     else :  #aver_y[0] > aver_h / 2 and (height-aver_y[-1]) < aver_h / 2:
         ud_btile = (num_vertical - 1)
 
@@ -337,16 +341,21 @@ elif aver_x[0] < 10 and (width-aver_x[-1]) > 10 : # 오른쪽만 있을경우
         rl_btile = round((num_horizon - 1) / 2)
 
 if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
-    if  (aver_x[0] > aver_w / 2 and (width-aver_x[-1]) > aver_w / 2) or aver_x[0] + (width-aver_x[-1]) > aver_w+5:
+    if  (aver_x[0] > aver_w / 2 and (width-aver_x[-1]) > aver_w / 2) and aver_x[0] + (width-aver_x[-1]) > aver_w+5:
         rl_btile = (num_horizon-1)*2
+
+    elif ((aver_x[0] > aver_w / 2 and (width-aver_x[-1]) < aver_w / 2)) or ((aver_x[0] < aver_w / 2 and (width-aver_x[-1]) > aver_w / 2)):
+        rl_btile = (num_horizon-1) + round((num_horizon-1)/2)
+
     else :  #aver_y[0] > aver_h / 2 and (height-aver_y[-1]) < aver_h / 2:
         rl_btile = (num_horizon - 1)
 
 # 구석 조각 맞추기
+# if aver_x[0] + (width - aver_x[-1]) < aver_w and aver_y[0] + (height - aver_y[-1]) :   # 구석 조각을 온장 하나로 나눌 수 있는 경우
+#     an_btile = 1
 
-
-
-
+print(ud_btile)
+print(rl_btile)
 
 btile = ud_btile + rl_btile
 print("가로 줄 수 :",num_horizon)
