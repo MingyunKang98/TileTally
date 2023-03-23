@@ -354,19 +354,21 @@ if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
 
 # 구석 조각 맞추기
 
-if aver_x[0] + (width - aver_x[-1]) < aver_w/2 and aver_y[0] + (height - aver_y[-1]) < aver_h/2:   # 구석 조각을 온장 하나로 나눌 수 있는 경우
+if aver_x[0] < aver_w/2 and (width - aver_x[-1]) < aver_w/2 and aver_y[0] < aver_h/2 and (height - aver_y[-1]) < aver_h/2 : # 구석 조각을 온장 하나로 나눌 수 있는 경우
     an_btile = 1
 
-elif aver_x[0] > aver_w / 2 and (width - aver_x[-1]) > aver_w / 2 and aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 : # 구석 조각이 한장씩 필요한 경우
+elif aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 : # 구석 조각이 한장씩 필요한 경우
     an_btile = 4
 
-elif (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and (aver_y[0] > aver_h/2 or (height - aver_y[-1]) > aver_h/2)) \
-        or (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and (aver_x[0] > aver_w/2 or (width - aver_x[-1]) > aver_w/2)):
-    an_btile = 3
-
-else :
+# elif (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and (aver_y[0] > aver_h/2 or (height - aver_y[-1]) > aver_h/2)) \
+#         or (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and (aver_x[0] > aver_w/2 or (width - aver_x[-1]) > aver_w/2)):
+#     an_btile = 3
+elif  ((aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2) and (aver_y[0] < aver_h/2 or (height - aver_y[-1]) < aver_h/2)) \
+       or ((aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2) and (aver_x[0] < aver_w/2 or (width - aver_x[-1]) < aver_w/2)) :
     an_btile = 2
 
+else :
+    an_btile = 3
 
 print(an_btile)
 print(ud_btile)
