@@ -79,7 +79,7 @@ def img_to_coord(img):
     return img
 
 if __name__ == "__main__":
-    dir = "./49.jpg"
+    dir = "./Base01.jpg"
     src = cv2.imread(dir)
     src = cv2.resize(src, (640,640))
     x_data, y_data = cannyedge(src, 150, 350)

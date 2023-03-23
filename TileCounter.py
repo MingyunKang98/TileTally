@@ -14,7 +14,6 @@ def mouse_callback(event, x, y, flags, param):
                 cv2.line(img, (x, y), tuple(pt_list[-2]), (255, 0, 0), thickness=2)
             cv2.imshow('Original Image', img)
 
-
 # 이미지 로드
 img = cv2.imread('Base01.jpg')
 
@@ -57,10 +56,6 @@ while True:
             x2 = int(x0 - 1000 * (-b))
             y2 = int(y0 - 1000 * (a))
             cv2.line(hough_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-        #trial point
-        segmented = segment_by_angle_kmeans(lines)
-        intersections = segmented_intersections(segmented)
-
 
         numpy_horizontal = np.hstack((homography, hough_image))
         cv2.imshow('Intersection Points', numpy_horizontal)
@@ -69,5 +64,6 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 cv2.destroyAllWindows()
+
 
 

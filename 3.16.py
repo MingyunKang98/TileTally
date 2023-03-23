@@ -1,12 +1,4 @@
-'''
-tile이미지 불러오기 0
-좌표 찍기0
-호모그래피0
-허프라인 0
-intersection 0
-intersection 거리
-넓이
-'''
+
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,9 +8,8 @@ import math
 
 
 point_list = []
-src_img = cv2.imread('img/tile8.jpg')
-src_img
-width = 1000
+src_img = cv2.imread('Base01.jpg')
+width = 800
 height = 800
 
 color = (255,0,255)
@@ -51,8 +42,9 @@ def mouse_handler(event, x,y,flags,param) :
 
 
 def show_result() :
+
     src = np.float32(point_list)
-    dst = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
+    dst = np.array([[0, 0], [0, width], [height, width], [height, 0]], dtype=np.float32)
 
     matrix = cv2.getPerspectiveTransform(src, dst)  # matrix 얻어옴
     gray = cv2.cvtColor(src_img, cv2.COLOR_BGR2GRAY)
@@ -107,7 +99,7 @@ def show_result() :
 
         labels = labels.reshape(-1)  # Transpose to row vector
 
-        # Segment lines based on their label of 0 or 1
+        # Segment lines based on their label of 0 or r1
         segmented = defaultdict(list)
         for i, line in zip(range(len(lines)), lines):
             segmented[labels[i]].append(line)
@@ -194,13 +186,13 @@ def show_result() :
     ax3.set_title('Hough Line Transform')
     ax3.axis("off")
 
-
-
-
     ax4 = fig.add_subplot(rows, cols, 4)
     ax4.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     ax4.set_title('inter_section')
     ax4.axis("off")
+
+    cv2.waitKey(1)
+    cv2.destroyAllWindows()
 
     sorted_x = sorted(new_coordinates, key=lambda x: (x[0][0], x[0][1]))
     print("교차점 수 :",len(new_coordinates))
@@ -230,4 +222,4 @@ cv2.setMouseCallback('img',mouse_handler)
 cv2.imshow('img', src_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-print()
+
