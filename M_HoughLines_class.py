@@ -34,25 +34,19 @@ class InteractivePlot:
             self.fig.canvas.mpl_disconnect(self.cid)
             plt.close()
 
+        self.update_coord()
+
     def show(self):
         plt.show()
-    class coord:
-        def __init__(self):
-            self.x = np.array(InteractivePlot.xdata)
-            self.y = np.array(InteractivePlot.ydata)
-            self.xy = np.stack((self.x, self.y), axis=1)
 
-        # def coord_sort():
-        #     x = np.array(x)
-        #     k = x[:, 0]
-        #     s = k.argsort()
-        #     centers_sorted = x[s]
-        #     for i in range(len(centers_sorted) // 2):
-        #         b = centers_sorted[2 * i:2 * (i + 1), :]
-        #         k = b[:, 1]
-        #         s = k.argsort()
-        #         centers_sorted[2 * i:2 * (i + 1), :] = b[s]
-        #     return centers_sorted
+    def update_coord(self):
+        self.coord = InteractivePlot.coord(self.xdata, self.ydata)
+
+    class coord:
+        def __init__(self, x, y):
+            self.x = np.array(x)
+            self.y = np.array(y)
+            self.xy_data = np.stack((self.x, self.y), axis=1)
 
 
 if __name__ == "__main__":
@@ -61,4 +55,4 @@ if __name__ == "__main__":
     plot.show()
     print(plot.xdata)
     print(plot.ydata)
-    print(plot.coord)
+    print(plot.coord.x)
