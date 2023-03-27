@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a77a73fc-25c2-4efd-a3c0-bca25700a2b9" name="Changes" comment="">
+    <list default="true" id="a77a73fc-25c2-4efd-a3c0-bca25700a2b9" name="Changes" comment="Changes">
+      <change afterPath="$PROJECT_DIR$/CounterByLength.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packing.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/all_lines.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/all_lines.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intersection_points.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/intersection_points.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,12 +30,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2NGW4gHAhgT7EC0HbfOIyRrpCUF" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
@@ -146,6 +154,14 @@
       <option name="presentableId" value="Default" />
       <updated>1679290709713</updated>
     </task>
+    <task id="LOCAL-00001" summary="Changes">
+      <created>1679633356897</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1679633356897</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -158,6 +174,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
