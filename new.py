@@ -246,7 +246,7 @@ sorted_x = sorted(new_coordinates, key=lambda x: (x[0][0], x[0][1]))  # x 좌표
 sorted_y = sorted(new_coordinates, key=lambda x: x[0][1])             # y 좌표 오름차순 정렬
 
 for i in range(len(sorted_x)):
-    if np.abs(sorted_x[i + 1][0][0] - sorted_x[i][0][0]) >= 50:
+    if np.abs(sorted_x[i + 1][0][0] - sorted_x[i][0][0]) >= 30:
         num_horizon = i +1
         num_vertical = int(len(new_coordinates)/num_horizon)
         break
