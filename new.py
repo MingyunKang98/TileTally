@@ -277,7 +277,11 @@ for j in range(0,num_horizon):
 
 # 규칙성 있는 x,y 좌표
 sorted_xy = sorted(sorted_x, key=lambda x: (x[0][0], x[0][1]))
-
+for point in sorted_xy:
+    pt = (point[0][0], point[0][1])
+    length = 5
+    cv2.line(img, (pt[0], pt[1]-length), (pt[0], pt[1]+length), (255, 0, 0), 5) # vertical line
+    cv2.line(img, (pt[0]-length, pt[1]), (pt[0]+length, pt[1]), (255, 0, 0), 5)
 # 평균 타일 넓이 구하기
 # tile_h = math.sqrt((sorted_xy[0][0][0] -sorted_xy[1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[1][0][1]) ** 2)
 # for i in range(len(sorted_xy)):
@@ -308,11 +312,20 @@ elif aver_y[0] > 10 and (height-aver_y[-1]) < 10 :   # 위쪽만 있을경우
     else:
         ud_btile = round((num_vertical -1)/2)
 
+    if (num_vertical - 1) % 2 == 1:
+        if aver_x[0] < aver_w / 2 and (width - aver_x[-1]) < aver_w / 2 and aver_y[0] < aver_h / 2 :
+            an_btile = 0
+
+
 elif aver_y[0] < 10 and (height-aver_y[-1]) > 10 : # 아래만 있을경우
     if (height-aver_y[-1]) > aver_h / 2:
         ud_btile = num_vertical - 1
     else:
         ud_btile = round((num_vertical - 1) / 2)
+
+    if (num_vertical - 1) % 2 == 1:
+        if aver_x[0] < aver_w / 2 and (width - aver_x[-1]) < aver_w / 2 and (height - aver_y[-1]) < aver_h / 2:
+            an_btile = 0
 
 if aver_y[0] > 10 and (height-aver_y[-1]) > 10 :    # 둘 다 있을경우
     if  (aver_y[0] > aver_h / 2 and (height-aver_y[-1]) > aver_h / 2) and aver_y[0] + (height-aver_y[-1]) > aver_h+5:
@@ -335,19 +348,29 @@ elif aver_x[0] > 10 and (width-aver_x[-1]) < 10 :   # 왼쪽만 있을경우
     else:
         rl_btile = round((num_horizon -1)/2)
 
+    if (num_horizon - 1) % 2 == 1:
+        if aver_y[0] < aver_h / 2 and (height - aver_y[-1]) < aver_h / 2 and aver_x[0] < aver_y / 2 :
+            an_btile = 0
+
 elif aver_x[0] < 10 and (width-aver_x[-1]) > 10 : # 오른쪽만 있을경우
     if (width-aver_x[-1]) > aver_w / 2:
         rl_btile = num_horizon - 1
+
     else:
         rl_btile = round((num_horizon - 1) / 2)
+
+    if (num_horizon - 1) % 2 == 1:
+        if aver_y[0] < aver_h / 2 and (height - aver_y[-1]) < aver_h / 2 and (width - aver_x[-1]) < aver_w / 2:
+            an_btile = 0
 
 if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
     if  (aver_x[0] > aver_w / 2 and (width-aver_x[-1]) > aver_w / 2) and aver_x[0] + (width-aver_x[-1]) > aver_w+5:
         rl_btile = (num_horizon-1)*2
-
+        # if
     elif ((aver_x[0] > aver_w / 2 and (width-aver_x[-1]) < aver_w / 2)and aver_x[0] + (width-aver_x[-1]) > aver_w+5) or \
             ((aver_x[0] < aver_w / 2 and (width-aver_x[-1]) > aver_w / 2)and aver_x[0] + (width-aver_x[-1]) > aver_w+5):
         rl_btile = (num_horizon-1) + round((num_horizon-1)/2)
+
 
     else :  #aver_y[0] > aver_h / 2 and (height-aver_y[-1]) < aver_h / 2:
         rl_btile = (num_horizon - 1)
@@ -355,18 +378,18 @@ if aver_x[0] > 10 and (width-aver_x[-1]) > 10 :    # 둘 다 있을경우
 # 구석 조각 맞추기
 
 if aver_x[0] < aver_w/2 and (width - aver_x[-1]) < aver_w/2 and aver_y[0] < aver_h/2 and (height - aver_y[-1]) < aver_h/2 : # 구석 조각을 온장 하나로 나눌 수 있는 경우
-    an_btile = 1
+    if aver_x[0] > 10 and (width - aver_x[-1]) > 10 and aver_y[0] > 10 and (height - aver_y[-1]) > 10 :
+        an_btile = 1
 
 elif aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 : # 구석 조각이 한장씩 필요한 경우
     an_btile = 4
 
-elif (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and (aver_y[0] > aver_h/2 or (height - aver_y[-1]) > aver_h/2)) \
-        or (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and (aver_x[0] > aver_w/2 or (width - aver_x[-1]) > aver_w/2)):
+elif (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and aver_y[0] > aver_h/2 and (aver_h - aver_y[0]) < (height - aver_y[-1]) < aver_h/2) or \
+    (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and (height - aver_y[-1]) > aver_h/2 and (height - aver_y[-1]) < (aver_h - aver_y[0]) < aver_h/2) or \
+    (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and aver_x[0] > aver_w/2 and (aver_w - aver_x[0]) < (width - aver_x[-1]) < aver_w/2) or \
+    (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and (width - aver_x[-1]) > aver_w/2 and (width - aver_x[-1]) < (aver_w - aver_x[0]) < aver_w/2):
     an_btile = 3
 
-# elif  ((aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2) and (aver_y[0] < aver_h/2 or (height - aver_y[-1]) < aver_h/2)) \
-#        or ((aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2) and (aver_x[0] < aver_w/2 or (width - aver_x[-1]) < aver_w/2)) :
-#     an_btile = 2
 else :
     an_btile = 2
 
