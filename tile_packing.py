@@ -247,6 +247,8 @@ for point in new_coordinates:
 sorted_x = sorted(new_coordinates, key=lambda x: (x[0][0], x[0][1]))  # x 좌표 오름차순 정렬
 sorted_y = sorted(new_coordinates, key=lambda x: x[0][1])             # y 좌표 오름차순 정렬
 
+
+#
 for i in range(len(sorted_x)):
     if np.abs(sorted_x[i + 1][0][0] - sorted_x[i][0][0]) >= 50:
         num_horizon = i +1
@@ -290,8 +292,10 @@ for point in sorted_xy:
 #     if np.abs(sorted_xy[i + 1][0][0] - sorted_xy[i][0][0]) >= 20:
 #         tile_w = math.sqrt((sorted_xy[0][0][0] -sorted_xy[i+1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[i+1][0][1]) ** 2)
 #         break
+
 sum_w = 0
 sum_h = 0
+
 for i in range(1,len(aver_x)):
     sum_w += aver_x[i] - aver_x[i-1]
 aver_w = round(sum_w / (num_vertical-1))
@@ -303,20 +307,64 @@ aver_h = round(sum_h / (num_horizon-1))
 aver_area = aver_h * aver_w
 whole_tile = (num_vertical-1)*(num_horizon-1)
 
-u_tile = [(aver_w,aver_y[0])] * (num_vertical-1)
-d_tile = [(aver_w,height-aver_y[-1])] * (num_vertical-1)
-l_tile = [(aver_x[0],aver_h)] * (num_horizon -1)
-r_tile = [(width - aver_x[-1],aver_h)] * (num_horizon -1)
-lu_tile = [(aver_x[0],aver_y[0])]
-ru_tile = [(width - aver_x[-1],aver_y[0])]
-ld_tile = [(aver_x[0],height-aver_y[-1])]
-rd_tile = [(width - aver_x[-1],height-aver_y[-1])]
+# 깨진 타일 가로,세로 구하기
+if aver_y[0] > 10 :
+    u_tile = [(aver_w,aver_y[0])] * (num_vertical-1)                  # 위
+else :
+    u_tile = []
 
+if (height-aver_y[-1]) > 10 :
+    d_tile = [(aver_w,height-aver_y[-1])] * (num_vertical-1)          # 아래
+else :
+    d_tile = []
 
+if aver_x[0] > 10 :
+    l_tile = [(aver_x[0],aver_h)] * (num_horizon -1)                  # 좌
+else :
+    l_tile = []
+
+if (width-aver_x[-1]) > 10 :
+    r_tile = [(width - aver_x[-1],aver_h)] * (num_horizon -1)         # 우
+else :
+    r_tile = []
+
+if aver_y[0] > 10 and aver_x[0] > 10 :
+    lu_tile = [(aver_x[0],aver_y[0])]               # 좌상 모서리
+else :
+    lu_tile = []
+
+if aver_y[0] > 10 and (width-aver_x[-1]) > 10 :
+    ru_tile = [(width - aver_x[-1],aver_y[0])]                        # 우상 모서리
+else :
+    ru_tile = []
+
+if (height-aver_y[-1]) > 10 and aver_x[0] > 10 :
+    ld_tile = [(aver_x[0],height-aver_y[-1])]                         # 좌하 모서리
+else :
+    ld_tile = []
+
+if (height-aver_y[-1]) > 10 and width - aver_x[-1] > 10 :
+    rd_tile = [(width - aver_x[-1],height-aver_y[-1])]               # 우하 모서리
+else :
+    rd_tile = []
+print('윗줄 깨진 타일',u_tile)
+print('아랫줄 깨진 타일',d_tile)
+print('왼쪽 깨진 타일',l_tile)
+print('오른쪽 깨진 타일',r_tile)
+print('좌상 모서리',lu_tile)
+print('우상 모서리',ru_tile)
+print('좌하 모서리',ld_tile)
+print('우하 모서리',rd_tile)
+
+# lu_tile = [(aver_x[0],aver_y[0])]                                 # 좌상 모서리
+# ru_tile = [(width - aver_x[-1],aver_y[0])]                        # 우상 모서리
+# ld_tile = [(aver_x[0],height-aver_y[-1])]                         # 좌하 모서리
+# rd_tile = [(width - aver_x[-1],height-aver_y[-1])]                # 우하 모서리
+
+# 모든 깨진 타일 [(가로,세로)]
 b_tile = u_tile + d_tile + l_tile + r_tile + lu_tile + ru_tile + ld_tile + rd_tile
 
 # Rectpack 패커 객체 생성 및 설정
-
 bins = [(aver_w, aver_h)]*1000
 rectangles = b_tile
 
