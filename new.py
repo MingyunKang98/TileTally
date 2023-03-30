@@ -389,10 +389,6 @@ elif (aver_x[0] > aver_w/2 and (width - aver_x[-1]) > aver_w/2 and aver_y[0] > a
     (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and aver_x[0] > aver_w/2 and (aver_w - aver_x[0]) < (width - aver_x[-1]) < aver_w/2) or \
     (aver_y[0] > aver_h/2 and (height - aver_y[-1]) > aver_h/2 and (width - aver_x[-1]) > aver_w/2 and (width - aver_x[-1]) < (aver_w - aver_x[0]) < aver_w/2):
     an_btile = 3
-# elif (num_vertical -1)%2 == 1 :
-#     if aver_x[0] < aver_w/2 and (width - aver_x[-1]) < aver_w/2 and aver_y[0] < aver_h/2 and (height - aver_y[-1]) < aver_h/2 :
-#         an_btile = 0
-
 
 else :
     an_btile = 2
@@ -418,3 +414,4 @@ print(aver_y)
 cv2.imshow('intersection', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+print()
