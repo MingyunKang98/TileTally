@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-# 상수
+# 큰 직사각형 정의
 MAX_WIDTH = 1000
 MAX_HEIGHT = 1000
 def calculate_rectangle_area(rectangle: Tuple[int, int]) -> int:
