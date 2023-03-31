@@ -1,8 +1,10 @@
 from typing import List, Tuple
+import cv2
 
 # 큰 직사각형 정의
 MAX_WIDTH = 1000
 MAX_HEIGHT = 1000
+rectangles = [(100, 30), (40, 60), (30, 30), (70, 70), (100, 50), (30, 30)]
 def calculate_rectangle_area(rectangle: Tuple[int, int]) -> int:
     """
     직사각형의 면적을 계산하는 함수
@@ -84,4 +86,3 @@ def place_all_rectangles(grids: List[List[List[int]]], rectangles: List[Tuple[in
 
     # 큰 직사각형의 갯수를 반환함
     return len(grids)
-

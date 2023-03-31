@@ -222,4 +222,7 @@ cv2.setMouseCallback('img',mouse_handler)
 cv2.imshow('img', src_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 75ba0b71f1b115e51b341f0d343d471ea5d49852
