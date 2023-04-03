@@ -50,7 +50,7 @@ class InteractivePlot:
 
 
 if __name__ == "__main__":
-    dir = "./Base01.jpg"
+    dir = "../datasets/IMG_4504.jpg"
     plot = InteractivePlot(dir)
     plot.show()
     print(plot.xdata)

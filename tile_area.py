@@ -34,13 +34,13 @@ def draw_tile(coords):
     return area
 
 if __name__ == "__main__":
-    img_dir = "./49.jpg"
-    txt_dir = "./49.txt"
+    img_dir = "../datasets/brick.jpg"
+    txt_dir = "../datasets/brick.txt"
     img = cv2.imread(img_dir)
     width = np.shape(img)[0]
     height = np.shape(img)[1]
 
-    coords = txt_coord(txt_dir, 0)
+    coords = txt_coord(txt_dir, 2)
     area = draw_tile(coords)
     plt.imshow(img)
     plt.show()
