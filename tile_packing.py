@@ -7,35 +7,66 @@ from rectpack import newPacker, PackingMode
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
-def mouse_handler(event, x,y,flags,param) :
-    global drawing, des_img
-    des_img = src_img.copy()
-    if event == cv2.EVENT_LBUTTONDOWN :
-        drawing = True
-        point_list.append((x,y))
 
-    if drawing :
-        prev_point = None   # 직선의 시작점
-        for point in point_list :
-            cv2.circle(des_img,point,8, color, cv2.FILLED)
-            if prev_point :
-                cv2.line(des_img,prev_point,point,color, thickness,cv2.LINE_AA)
-            prev_point = point
+def sort_points(pts):
+    rect = np.zeros((4, 2), dtype=np.float32)
+    s = np.sum(pts, axis=1)
 
-        next_point = (x,y)
-        if len(point_list) == 4 :
-            next_point = point_list[0]   # 첫 번째 시작점
-            cv2.line(des_img,prev_point,next_point,color, thickness,cv2.LINE_AA)
-    cv2.imshow('img',des_img)
+    rect[0] = pts[np.argmin(s)]
+    rect[2] = pts[np.argmax(s)]
+
+    diff = np.diff(pts, axis=1)
+
+    rect[1] = pts[np.argmin(diff)]
+    rect[3] = pts[np.argmax(diff)]
+
+    return rect
 
 def homography():
     global img_homo
     src = np.float32(point_list)
     dst = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
 
-    matrix = cv2.getPerspectiveTransform(src, dst)  # matrix 얻어옴
-    img_homo = cv2.warpPerspective(src_img, matrix, (width, height))  # matrix 대로 변환
+    matrix = cv2.getPerspectiveTransform(src, dst)
+    img_homo = cv2.warpPerspective(src_img, matrix, (width, height))
     cv2.imshow('homography', img_homo)
+
+def mouse_handler(event, x, y, flags, param):
+    global point_list, des_img, drawing
+
+    if event == cv2.EVENT_LBUTTONDOWN:
+        point_list.append((x, y))
+        drawing = True
+
+    if event == cv2.EVENT_MOUSEMOVE and drawing:
+        des_img = src_img.copy()
+        cv2.circle(des_img, point_list[-1], 10, color, thickness)
+
+        if len(point_list) > 1:
+            cv2.line(des_img, point_list[-2], point_list[-1], color, thickness)
+
+        cv2.imshow('img', des_img)
+
+    if event == cv2.EVENT_LBUTTONUP:
+        drawing = False
+        des_img = src_img.copy()
+        cv2.circle(des_img, point_list[-1], 10, color, thickness)
+
+        if len(point_list) > 1:
+            prev_point = point_list[0]
+            for point in point_list[1:]:
+                cv2.line(des_img, prev_point, point, color, thickness)
+                prev_point = point
+
+            if len(point_list) == 4:
+                cv2.line(des_img, point_list[-1], point_list[0], color, thickness)
+
+                point_list = sort_points(point_list)
+
+        cv2.imshow('img', des_img)
+
+
+
 
 def segment_by_angle_kmeans(lines, k=2, **kwargs):
     """
@@ -129,13 +160,13 @@ def drawLines(img, lines, color=(0,0,255)):
 point_list = []
 src_img = cv2.imread('Base01.jpg')
 width = 1000
-height = 800
+height = 2000
 color = (0,255,255)
-thickness = 3
+thickness = 5
 drawing = False
 des_img = None
 
-cv2.namedWindow('img')
+cv2.imshow('img', src_img)
 cv2.setMouseCallback('img', mouse_handler)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

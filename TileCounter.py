@@ -15,7 +15,7 @@ def mouse_callback(event, x, y, flags, param):
             cv2.imshow('Original Image', img)
 
 # 이미지 로드
-img = cv2.imread('Base01.jpg')
+img = cv2.imread('49.jpg')
 
 # 마우스 이벤트 처리를 위한 변수 초기화
 pt_list = []
