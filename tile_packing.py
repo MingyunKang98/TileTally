@@ -130,7 +130,11 @@ def drawLines(img, lines, color=(0,0,255)):
             cv2.line(img, (x1,y1), (x2,y2), color, 1)
 
 point_list = []
+<<<<<<< HEAD
 src_img = cv2.imread('img/tile8.jpg')
+=======
+src_img = cv2.imread('Base01.jpg')
+>>>>>>> origin/master
 width = 1000
 height = 800
 color = (0,255,255)
@@ -410,4 +414,3 @@ cv2.imshow('intersection', img)
 plt.show()
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-

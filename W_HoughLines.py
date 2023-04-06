@@ -1,5 +1,11 @@
-import cv2
+"""
+Find the intersection points of lines.
+"""
+
 import numpy as np
+import cv2
+from collections import defaultdict
+import sys
 
 
 # 마우스 이벤트 콜백 함수
@@ -13,19 +19,113 @@ def mouse_callback(event, x, y, flags, param):
             count += 1
             if count > 1:
                 cv2.line(img, (x, y), tuple(pt_list[-2]), (255, 0, 0), thickness=2)
-            cv2.imshow('image', img)
+            cv2.imshow('Original Image', img)
+
+from collections import defaultdict
+
+def segment_by_angle_kmeans(lines, k=2, **kwargs):
+    """
+    Group lines by their angle using k-means clustering.
+
+    Code from here:
+    https://stackoverflow.com/a/46572063/1755401
+    """
+
+    # Define criteria = (type, max_iter, epsilon)
+    default_criteria_type = cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER
+    criteria = kwargs.get('criteria', (default_criteria_type, 10, 1.0))
+
+    flags = kwargs.get('flags', cv2.KMEANS_RANDOM_CENTERS)
+    attempts = kwargs.get('attempts', 10)
+
+    # Get angles in [0, pi] radians
+    angles = np.array([line[0][1] for line in lines])
+
+    # Multiply the angles by two and find coordinates of that angle on the Unit Circle
+    pts = np.array([[np.cos(2*angle), np.sin(2*angle)] for angle in angles], dtype=np.float32)
+
+    # Run k-means
+    if sys.version_info[0] == 2:
+        # python 2.x
+        ret, labels, centers = cv2.kmeans(pts, k, criteria, attempts, flags)
+    else:
+        # python 3.x, syntax has changed.
+        labels, centers = cv2.kmeans(pts, k, None, criteria, attempts, flags)[1:]
+
+    labels = labels.reshape(-1) # Transpose to row vector
+
+    # Segment lines based on their label of 0 or 1
+    segmented = defaultdict(list)
+    for i, line in zip(range(len(lines)), lines):
+        segmented[labels[i]].append(line)
+
+    segmented = list(segmented.values())
+    print("Segmented lines into two groups: %d, %d" % (len(segmented[0]), len(segmented[1])))
+
+    return segmented
 
 
-# 이미지 로드
-img = cv2.imread('Base01.jpg')
+def intersection(line1, line2):
+    """
+    Find the intersection of two lines
+    specified in Hesse normal form.
+
+    Returns closest integer pixel locations.
+
+    See here:
+    https://stackoverflow.com/a/383527/5087436
+    """
+
+    rho1, theta1 = line1[0]
+    rho2, theta2 = line2[0]
+    A = np.array([[np.cos(theta1), np.sin(theta1)],
+                  [np.cos(theta2), np.sin(theta2)]])
+    b = np.array([[rho1], [rho2]])
+    x0, y0 = np.linalg.solve(A, b)
+    x0, y0 = int(np.round(x0)), int(np.round(y0))
+
+    return [[x0, y0]]
+
+
+def segmented_intersections(lines):
+    """
+    Find the intersection between groups of lines.
+    """
+
+    intersections = []
+    for i, group in enumerate(lines[:-1]):
+        for next_group in lines[i+1:]:
+            for line1 in group:
+                for line2 in next_group:
+                    intersections.append(intersection(line1, line2))
+
+    return intersections
+
+
+def drawLines(img, lines, color=(0,0,255)):
+    """
+    Draw lines on an image
+    """
+    for line in lines:
+        for rho,theta in line:
+            a = np.cos(theta)
+            b = np.sin(theta)
+            x0 = a*rho
+            y0 = b*rho
+            x1 = int(x0 + 1000*(-b))
+            y1 = int(y0 + 1000*(a))
+            x2 = int(x0 - 1000*(-b))
+            y2 = int(y0 - 1000*(a))
+            cv2.line(img, (x1,y1), (x2,y2), color, 1)
 
 # 마우스 이벤트 처리를 위한 변수 초기화
 pt_list = []
 count = 0
 
 # 이미지 표시 및 마우스 이벤트 처리
-cv2.imshow('image', img)
-cv2.setMouseCallback('image', mouse_callback)
+img = cv2.imread("Base01.jpg")
+cv2.imshow('Original Image', img)
+cv2.setMouseCallback('Original Image', mouse_callback)
 
 # 마우스 이벤트 처리 완료 후, 호모그래피 계산
 while True:
@@ -37,48 +137,71 @@ while True:
         pts2 = np.float32([[0, 0], [0, 1000], [1000, 1000], [1000, 0]])
         h, _ = cv2.findHomography(pts1, pts2)
         img_out = cv2.warpPerspective(img, h, (1000, 1000))
-        # img_out = cv2.rotate(img_out, cv2.ROTATE_90_CLOCKWISE)  # 이미지 90도 회전
+        homography = img_out
 
-        # 그레이 스케일 변환
-        gray_img = cv2.cvtColor(img_out, cv2.COLOR_BGR2GRAY)
+gray = cv2.cvtColor(img_out, cv2.COLOR_BGR2GRAY)
+edges = cv2.medianBlur(gray, 5)
 
-        # 가우시안 블러 필터 적용
-        blur_img = cv2.GaussianBlur(gray_img, (5, 5), 0)
 
-        # 캐니 엣지 검출기 적용
-        edges = cv2.Canny(blur_img, 50, 100, apertureSize=3)
 
-        # 허프 변환 수행
-        lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=150, minLineLength=100, maxLineGap=70)
+# Make binary image
+adapt_type = cv2.ADAPTIVE_THRESH_GAUSSIAN_C
+thresh_type = cv2.THRESH_BINARY_INV
+bin_img = cv2.adaptiveThreshold(edges, 255, adapt_type, thresh_type, 11, 2)
+cv2.imshow("binary", bin_img)
+cv2.waitKey()
 
-        # RANSAC으로 수평과 수직 직선 추출
-        vertical_lines = []
-        horizontal_lines = []
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            if abs(x2 - x1) < 5:
-                vertical_lines.append(line)
-            elif abs(y2 - y1) < 5:
-                horizontal_lines.append(line)
+# Detect lines
+rho = 1
+theta = np.pi/180
+thresh = 200
+lines = cv2.HoughLines(bin_img, rho, theta, thresh)
 
-        # 수평과 수직 직선 병합
-        merged_lines = []
-        for v_line in vertical_lines:
-            v_x1, v_y1, v_x2, v_y2 = v_line
-            for h_line in horizontal_lines:
-                h_x1, h_y1, h_x2, h_y2 = h_line
-                # 수직선의 기울기가 수평선과 90도로 수직이라면
-                if abs(v_x1 - v_x2) < 10 and abs(h_y1 - h_y2) < 10:
-                    x, y = v_x1, h_y1
-                    merged_lines.append([x, y])
-                    # 직선 그리기
-                    cv2.line(line_img, (x - 20, y), (x + 20, y), (0, 0, 255), 2)
-                    cv2.line(line_img, (x, y - 20), (x, y + 20), (0, 0, 255), 2)
+if sys.version_info[0] == 2:
+    # python 2.x
+    # Re-shape from 1xNx2 to Nx1x2
+    temp_lines = []
+    N = lines.shape[1]
+    for i in range(N):
+        rho = lines[0,i,0]
+        theta = lines[0,i,1]
+        temp_lines.append( np.array([[rho,theta]]) )
+    lines = temp_lines
 
-        # 이미지 합치기 단계
-        result_img = np.concatenate((img_out, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR), line_img), axis=1)
-        cv2.imshow('Result', result_img)
+print("Found lines: %d" % (len(lines)))
 
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+# Draw all Hough lines in red
+img_with_all_lines = np.copy(img)
+drawLines(img_with_all_lines, lines)
+cv2.imshow("Hough lines", img_with_all_lines)
+cv2.waitKey()
+cv2.imwrite("all_lines.jpg", img_with_all_lines)
 
+# Cluster line angles into 2 groups (vertical and horizontal)
+segmented = segment_by_angle_kmeans(lines, 2)
+
+# Find the intersections of each vertical line with each horizontal line
+intersections = segmented_intersections(segmented)
+
+img_with_segmented_lines = np.copy(img)
+
+# Draw vertical lines in green
+vertical_lines = segmented[1]
+img_with_vertical_lines = np.copy(img)
+drawLines(img_with_segmented_lines, vertical_lines, (0,255,0))
+
+# Draw horizontal lines in yellow
+horizontal_lines = segmented[0]
+img_with_horizontal_lines = np.copy(img)
+drawLines(img_with_segmented_lines, horizontal_lines, (0,255,255))
+
+# Draw intersection points in magenta
+for point in intersections:
+    pt = (point[0][0], point[0][1])
+    length = 5
+    cv2.line(img_with_segmented_lines, (pt[0], pt[1]-length), (pt[0], pt[1]+length), (255, 0, 255), 1) # vertical line
+    cv2.line(img_with_segmented_lines, (pt[0]-length, pt[1]), (pt[0]+length, pt[1]), (255, 0, 255), 1)
+
+cv2.imshow("Segmented lines", img_with_segmented_lines)
+cv2.waitKey()
+cv2.imwrite("intersection_points.jpg", img_with_segmented_lines)
