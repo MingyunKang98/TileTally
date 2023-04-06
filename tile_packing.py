@@ -4,6 +4,8 @@ from collections import defaultdict
 import sys
 import math
 from rectpack import newPacker, PackingMode
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 def mouse_handler(event, x,y,flags,param) :
     global drawing, des_img
@@ -128,8 +130,7 @@ def drawLines(img, lines, color=(0,0,255)):
             cv2.line(img, (x1,y1), (x2,y2), color, 1)
 
 point_list = []
-src_img = cv2.imread('img/tile8'
-                     '.jpg')
+src_img = cv2.imread('img/tile8.jpg')
 width = 1000
 height = 800
 color = (0,255,255)
@@ -148,14 +149,6 @@ cv2.waitKey(0)
 img = img_homo
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# blur = cv2.medianBlur(gray, 5)
-#
-# # Make binary image
-# adapt_type = cv2.ADAPTIVE_THRESH_GAUSSIAN_C
-# thresh_type = cv2.THRESH_BINARY_INV
-# bin_img = cv2.adaptiveThreshold(blur, 255, adapt_type, thresh_type, 11, 2)
-# cv2.imshow("binary", bin_img)
-# cv2.waitKey()
 
 # Detect lines
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -286,12 +279,6 @@ for point in sorted_xy:
     length = 5
     cv2.line(img, (pt[0], pt[1]-length), (pt[0], pt[1]+length), (255, 0, 0), 5) # vertical line
     cv2.line(img, (pt[0]-length, pt[1]), (pt[0]+length, pt[1]), (255, 0, 0), 5)
-# 평균 타일 넓이 구하기
-# tile_h = math.sqrt((sorted_xy[0][0][0] -sorted_xy[1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[1][0][1]) ** 2)
-# for i in range(len(sorted_xy)):
-#     if np.abs(sorted_xy[i + 1][0][0] - sorted_xy[i][0][0]) >= 20:
-#         tile_w = math.sqrt((sorted_xy[0][0][0] -sorted_xy[i+1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[i+1][0][1]) ** 2)
-#         break
 
 sum_w = 0
 sum_h = 0
@@ -356,16 +343,10 @@ print('우상 모서리',ru_tile)
 print('좌하 모서리',ld_tile)
 print('우하 모서리',rd_tile)
 
-# lu_tile = [(aver_x[0],aver_y[0])]                                 # 좌상 모서리
-# ru_tile = [(width - aver_x[-1],aver_y[0])]                        # 우상 모서리
-# ld_tile = [(aver_x[0],height-aver_y[-1])]                         # 좌하 모서리
-# rd_tile = [(width - aver_x[-1],height-aver_y[-1])]                # 우하 모서리
-
-# 모든 깨진 타일 [(가로,세로)]
 b_tile = u_tile + d_tile + l_tile + r_tile + lu_tile + ru_tile + ld_tile + rd_tile
 
 # Rectpack 패커 객체 생성 및 설정
-bins = [(aver_w, aver_h)]*1000
+bins = [(aver_w, aver_h)]*len(b_tile)
 rectangles = b_tile
 
 packer = newPacker(mode=PackingMode.Offline, rotation=True)
@@ -381,16 +362,53 @@ for b in bins:
 # Start packing
 packer.pack()
 
+# Print the required number of bins
+print(len(packer))
+
 # Print the packing results
 for i, b in enumerate(packer):
     print(f"Bin {i+1}:")
     for r in b:
-        print(f"\t{(r.width, r.height)}\t{(r.x, r.y)}\t{'Rotated' if r.height > r.width else 'Not Rotated'}")
+        print(f"\t{(r.width, r.height)}\t{(r.x, r.y)}")
 
+
+n_subplots = len(packer)
+nrows = (n_subplots - 1) // 5 + 1  # 한 열에 5개 subplot이 들어가므로
+ncols = min(n_subplots, 5)
+
+fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 3*nrows))
+
+for i, b in enumerate(packer):
+    row_idx, col_idx = divmod(i, 5)
+    if nrows == 1:
+        ax = axs[col_idx]
+    else:
+        ax = axs[row_idx, col_idx]
+
+    # Plot the bin
+    bin_rect = Rectangle((0, 0), bins[i][0], bins[i][1], linewidth=1, edgecolor='r', facecolor='none')
+    ax.add_patch(bin_rect)
+
+    # Plot the rectangles
+    for r in b:
+        rect = Rectangle((r.x, r.y), r.width, r.height, linewidth=1, edgecolor='k', facecolor='g', alpha=0.5)
+        ax.add_patch(rect)
+
+    ax.set_xlim(0, bins[i][0])
+    ax.set_ylim(0, bins[i][1])
+    ax.set_aspect('equal')
+    ax.set_title(f"Bin {i+1}")
+
+# Adjust the spacing between subplots and show the plot
+plt.tight_layout()
 
 print('께진 타일 수 :',len(rectangles))
 print("깨진 타일로 패킹하여 만든 온장 수 :",len(packer))
 print("깨지지 않은 타일 수 : ",whole_tile)
 cv2.imshow('intersection', img)
+
+plt.show()
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
