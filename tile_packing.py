@@ -408,7 +408,6 @@ print("깨지지 않은 타일 수 : ",whole_tile)
 cv2.imshow('intersection', img)
 
 plt.show()
-
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
