@@ -4,6 +4,8 @@ from collections import defaultdict
 import sys
 import math
 from rectpack import newPacker, PackingMode
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 def mouse_handler(event, x,y,flags,param) :
     global drawing, des_img
@@ -26,23 +28,18 @@ def mouse_handler(event, x,y,flags,param) :
             cv2.line(des_img,prev_point,next_point,color, thickness,cv2.LINE_AA)
     cv2.imshow('img',des_img)
 
-
 def homography():
     global img_homo
     src = np.float32(point_list)
     dst = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
 
-    matrix = cv2.getPerspectiveTransform(src, dst)
-    img_homo = cv2.warpPerspective(src_img, matrix, (width, height))
-
-    cv2.imshow("Original Image", src_img)
-    cv2.imshow("Homography Transformed Image", img_homo)
-    cv2.waitKey(0)
+    matrix = cv2.getPerspectiveTransform(src, dst)  # matrix 얻어옴
+    img_homo = cv2.warpPerspective(src_img, matrix, (width, height))  # matrix 대로 변환
+    cv2.imshow('homography', img_homo)
 
 def segment_by_angle_kmeans(lines, k=2, **kwargs):
     """
     Group lines by their angle using k-means clustering.
-
     Code from here:
     https://stackoverflow.com/a/46572063/1755401
     """
@@ -83,9 +80,7 @@ def intersection(line1, line2):
     """
     Find the intersection of two lines
     specified in Hesse normal form.
-
     Returns closest integer pixel locations.
-
     See here:
     https://stackoverflow.com/a/383527/5087436
     """
@@ -132,7 +127,7 @@ def drawLines(img, lines, color=(0,0,255)):
             cv2.line(img, (x1,y1), (x2,y2), color, 1)
 
 point_list = []
-src_img = cv2.imread('49.jpg')
+src_img = cv2.imread('Base01.jpg')
 width = 1000
 height = 800
 color = (0,255,255)
@@ -145,21 +140,12 @@ cv2.setMouseCallback('img', mouse_handler)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-
 homography()
 cv2.waitKey(0)
 
 img = img_homo
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# blur = cv2.medianBlur(gray, 5)
-#
-# # Make binary image
-# adapt_type = cv2.ADAPTIVE_THRESH_GAUSSIAN_C
-# thresh_type = cv2.THRESH_BINARY_INV
-# bin_img = cv2.adaptiveThreshold(blur, 255, adapt_type, thresh_type, 11, 2)
-# cv2.imshow("binary", bin_img)
-# cv2.waitKey()
 
 # Detect lines
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -251,6 +237,8 @@ for point in new_coordinates:
 sorted_x = sorted(new_coordinates, key=lambda x: (x[0][0], x[0][1]))  # x 좌표 오름차순 정렬
 sorted_y = sorted(new_coordinates, key=lambda x: x[0][1])             # y 좌표 오름차순 정렬
 
+
+#
 for i in range(len(sorted_x)):
     if np.abs(sorted_x[i + 1][0][0] - sorted_x[i][0][0]) >= 50:
         num_horizon = i +1
@@ -288,14 +276,10 @@ for point in sorted_xy:
     length = 5
     cv2.line(img, (pt[0], pt[1]-length), (pt[0], pt[1]+length), (255, 0, 0), 5) # vertical line
     cv2.line(img, (pt[0]-length, pt[1]), (pt[0]+length, pt[1]), (255, 0, 0), 5)
-# 평균 타일 넓이 구하기
-# tile_h = math.sqrt((sorted_xy[0][0][0] -sorted_xy[1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[1][0][1]) ** 2)
-# for i in range(len(sorted_xy)):
-#     if np.abs(sorted_xy[i + 1][0][0] - sorted_xy[i][0][0]) >= 20:
-#         tile_w = math.sqrt((sorted_xy[0][0][0] -sorted_xy[i+1][0][0]) ** 2 + (sorted_xy[0][0][1] - sorted_xy[i+1][0][1]) ** 2)
-#         break
+
 sum_w = 0
 sum_h = 0
+
 for i in range(1,len(aver_x)):
     sum_w += aver_x[i] - aver_x[i-1]
 aver_w = round(sum_w / (num_vertical-1))
@@ -307,21 +291,59 @@ aver_h = round(sum_h / (num_horizon-1))
 aver_area = aver_h * aver_w
 whole_tile = (num_vertical-1)*(num_horizon-1)
 
-u_tile = [(aver_w,aver_y[0])] * (num_vertical-1)
-d_tile = [(aver_w,height-aver_y[-1])] * (num_vertical-1)
-l_tile = [(aver_x[0],aver_h)] * (num_horizon -1)
-r_tile = [(width - aver_x[-1],aver_h)] * (num_horizon -1)
-lu_tile = [(aver_x[0],aver_y[0])]
-ru_tile = [(width - aver_x[-1],aver_y[0])]
-ld_tile = [(aver_x[0],height-aver_y[-1])]
-rd_tile = [(width - aver_x[-1],height-aver_y[-1])]
+# 깨진 타일 가로,세로 구하기
+if aver_y[0] > 10 :
+    u_tile = [(aver_w,aver_y[0])] * (num_vertical-1)                  # 위
+else :
+    u_tile = []
 
+if (height-aver_y[-1]) > 10 :
+    d_tile = [(aver_w,height-aver_y[-1])] * (num_vertical-1)          # 아래
+else :
+    d_tile = []
+
+if aver_x[0] > 10 :
+    l_tile = [(aver_x[0],aver_h)] * (num_horizon -1)                  # 좌
+else :
+    l_tile = []
+
+if (width-aver_x[-1]) > 10 :
+    r_tile = [(width - aver_x[-1],aver_h)] * (num_horizon -1)         # 우
+else :
+    r_tile = []
+
+if aver_y[0] > 10 and aver_x[0] > 10 :
+    lu_tile = [(aver_x[0],aver_y[0])]               # 좌상 모서리
+else :
+    lu_tile = []
+
+if aver_y[0] > 10 and (width-aver_x[-1]) > 10 :
+    ru_tile = [(width - aver_x[-1],aver_y[0])]                        # 우상 모서리
+else :
+    ru_tile = []
+
+if (height-aver_y[-1]) > 10 and aver_x[0] > 10 :
+    ld_tile = [(aver_x[0],height-aver_y[-1])]                         # 좌하 모서리
+else :
+    ld_tile = []
+
+if (height-aver_y[-1]) > 10 and width - aver_x[-1] > 10 :
+    rd_tile = [(width - aver_x[-1],height-aver_y[-1])]               # 우하 모서리
+else :
+    rd_tile = []
+print('윗줄 깨진 타일',u_tile)
+print('아랫줄 깨진 타일',d_tile)
+print('왼쪽 깨진 타일',l_tile)
+print('오른쪽 깨진 타일',r_tile)
+print('좌상 모서리',lu_tile)
+print('우상 모서리',ru_tile)
+print('좌하 모서리',ld_tile)
+print('우하 모서리',rd_tile)
 
 b_tile = u_tile + d_tile + l_tile + r_tile + lu_tile + ru_tile + ld_tile + rd_tile
 
 # Rectpack 패커 객체 생성 및 설정
-
-bins = [(aver_w, aver_h)]*1000
+bins = [(aver_w, aver_h)]*len(b_tile)
 rectangles = b_tile
 
 packer = newPacker(mode=PackingMode.Offline, rotation=True)
@@ -337,20 +359,51 @@ for b in bins:
 # Start packing
 packer.pack()
 
+# Print the required number of bins
+print(len(packer))
+
 # Print the packing results
 for i, b in enumerate(packer):
     print(f"Bin {i+1}:")
     for r in b:
-        print(f"\t{(r.width, r.height)}\t{(r.x, r.y)}\t{'Rotated' if r.height > r.width else 'Not Rotated'}")
+        print(f"\t{(r.width, r.height)}\t{(r.x, r.y)}")
 
+
+n_subplots = len(packer)
+nrows = (n_subplots - 1) // 5 + 1  # 한 열에 5개 subplot이 들어가므로
+ncols = min(n_subplots, 5)
+
+fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 3*nrows))
+
+for i, b in enumerate(packer):
+    row_idx, col_idx = divmod(i, 5)
+    if nrows == 1:
+        ax = axs[col_idx]
+    else:
+        ax = axs[row_idx, col_idx]
+
+    # Plot the bin
+    bin_rect = Rectangle((0, 0), bins[i][0], bins[i][1], linewidth=1, edgecolor='r', facecolor='none')
+    ax.add_patch(bin_rect)
+
+    # Plot the rectangles
+    for r in b:
+        rect = Rectangle((r.x, r.y), r.width, r.height, linewidth=1, edgecolor='k', facecolor='g', alpha=0.5)
+        ax.add_patch(rect)
+
+    ax.set_xlim(0, bins[i][0])
+    ax.set_ylim(0, bins[i][1])
+    ax.set_aspect('equal')
+    ax.set_title(f"Bin {i+1}")
+
+# Adjust the spacing between subplots and show the plot
+plt.tight_layout()
 
 print('께진 타일 수 :',len(rectangles))
 print("깨진 타일로 패킹하여 만든 온장 수 :",len(packer))
 print("깨지지 않은 타일 수 : ",whole_tile)
 cv2.imshow('intersection', img)
+
+plt.show()
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
-
-
-
