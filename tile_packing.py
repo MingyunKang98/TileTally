@@ -22,12 +22,32 @@ def sort_points(pts):
 
     return rect
 
+# def homography():
+#     global img_homo, width, height
+#     src = np.float32(point_list)
+#     width = int(max(src[:,0])) - int(min(src[:,0]))
+#     height = int(max(src[:,1])) - int(min(src[:,1]))
+#     new_size = (int(width*0.4), int(height*0.4))
+#     dst = np.array([[0, 0], [new_size[0], 0], [new_size[0], new_size[1]], [0, new_size[1]]], dtype=np.float32)
+#
+#     matrix = cv2.getPerspectiveTransform(src, dst)
+#     img_homo = cv2.warpPerspective(src_img, matrix, new_size)
+#     cv2.imshow('homography', img_homo)
+#     return width, height
 def homography():
     global img_homo, width, height
     src = np.float32(point_list)
-    width = int(max(src[:,0])) - int(min(src[:,0]))
-    height = int(max(src[:,1])) - int(min(src[:,1]))
-    new_size = (int(width*0.4), int(height*0.4))
+    src_width = int(max(src[:,0])) - int(min(src[:,0]))
+    src_height = int(max(src[:,1])) - int(min(src[:,1]))
+    width_ratio = 800 / src_height
+    height_ratio = 800 / src_width
+    if width_ratio < height_ratio:
+        width = int(src_width * width_ratio)
+        height = 800
+    else:
+        width = 800
+        height = int(src_height * height_ratio)
+    new_size = (width, height)
     dst = np.array([[0, 0], [new_size[0], 0], [new_size[0], new_size[1]], [0, new_size[1]]], dtype=np.float32)
 
     matrix = cv2.getPerspectiveTransform(src, dst)
