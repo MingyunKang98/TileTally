@@ -159,8 +159,13 @@ def drawLines(img, lines, color=(0,0,255)):
 
 point_list = []
 src_img = cv2.imread('Base01.jpg')
-width = 1000
-height = 2000
+
+h_origin, w_origin = src_img.shape[:2]
+scale_percent = 20
+height = int(h_origin * scale_percent/100)
+width = int(w_origin * scale_percent/100)
+# width = 1000
+# height = 2000
 color = (0,255,255)
 thickness = 5
 drawing = False
@@ -175,6 +180,7 @@ homography()
 cv2.waitKey(0)
 
 img = img_homo
+
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
