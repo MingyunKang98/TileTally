@@ -22,14 +22,28 @@ def sort_points(pts):
 
     return rect
 
+# def homography():
+#     global img_homo
+#     src = np.float32(point_list)
+#     dst = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
+#
+#     matrix = cv2.getPerspectiveTransform(src, dst)
+#     img_homo = cv2.warpPerspective(src_img, matrix, (width, height))
+#     cv2.imshow('homography', img_homo)
 def homography():
-    global img_homo
+    global img_homo, width, height
     src = np.float32(point_list)
-    dst = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
+    width = int(max(src[:,0])) - int(min(src[:,0]))
+    height = int(max(src[:,1])) - int(min(src[:,1]))
+    new_size = (int(width*0.4), int(height*0.4))
+    dst = np.array([[0, 0], [new_size[0], 0], [new_size[0], new_size[1]], [0, new_size[1]]], dtype=np.float32)
 
     matrix = cv2.getPerspectiveTransform(src, dst)
-    img_homo = cv2.warpPerspective(src_img, matrix, (width, height))
+    img_homo = cv2.warpPerspective(src_img, matrix, new_size)
     cv2.imshow('homography', img_homo)
+    return width, height
+
+
 
 def mouse_handler(event, x, y, flags, param):
     global point_list, des_img, drawing
@@ -160,10 +174,10 @@ def drawLines(img, lines, color=(0,0,255)):
 point_list = []
 src_img = cv2.imread('Base01.jpg')
 
-h_origin, w_origin = src_img.shape[:2]
-scale_percent = 20
-height = int(h_origin * scale_percent/100)
-width = int(w_origin * scale_percent/100)
+# h_origin, w_origin = src_img.shape[:2]
+# scale_percent = 20
+# height = int(h_origin * scale_percent/100)
+# width = int(w_origin * scale_percent/100)
 # width = 1000
 # height = 2000
 color = (0,255,255)

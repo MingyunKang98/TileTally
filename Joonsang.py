@@ -1,32 +1,37 @@
-import cv2
-import numpy as np
-from keras.models import load_model
+from boxdetect import config
 
-# 딥러닝 모델 로드
-model = load_model('rectangle_detection.h5')
+file_name = 'brick.jpg'
 
-# 이미지 읽기
-img = cv2.imread('Base01.jpg')
+cfg = config.PipelinesConfig()
 
-# 이미지 전처리
-img = cv2.resize(img, (224, 224))
-img = np.expand_dims(img, axis=0)
+# important to adjust these values to match the size of boxes on your image
+cfg.width_range = (30,55)
+cfg.height_range = (25,40)
 
-# 직사각형 검출
-predictions = model.predict(img)
-if predictions > 0.5:
-    # 직사각형이 감지된 경우
-    # 직사각형 좌표 계산
-    x1 = int(predictions[1][0])
-    y1 = int(predictions[2][0])
-    x2 = int(predictions[3][0])
-    y2 = int(predictions[4][0])
-    # 직사각형을 빨간색 사각형으로 표시
-    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
-else:
-# 직사각형이 감지되지 않은 경우
-# 해당하는 코드 작성
-    print('No rectangle found in the image.')
-cv2.imshow('Result', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# the more scaling factors the more accurate the results but also it takes more time to processing
+# too small scaling factor may cause false positives
+# too big scaling factor will take a lot of processing time
+cfg.scaling_factors = [0.7]
+
+# w/h ratio range for boxes/rectangles filtering
+cfg.wh_ratio_range = (0.5, 1.7)
+
+# group_size_range starting from 2 will skip all the groups
+# with a single box detected inside (like checkboxes)
+cfg.group_size_range = (2, 100)
+
+# num of iterations when running dilation tranformation (to engance the image)
+cfg.dilation_iterations = 0
+
+from boxdetect.pipelines import get_boxes
+
+rects, grouping_rects, image, output_image = get_boxes(
+    file_name, cfg=cfg, plot=False)
+
+print(grouping_rects)
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(20,20))
+plt.imshow(output_image)
+plt.show()
