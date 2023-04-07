@@ -22,14 +22,6 @@ def sort_points(pts):
 
     return rect
 
-# def homography():
-#     global img_homo
-#     src = np.float32(point_list)
-#     dst = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
-#
-#     matrix = cv2.getPerspectiveTransform(src, dst)
-#     img_homo = cv2.warpPerspective(src_img, matrix, (width, height))
-#     cv2.imshow('homography', img_homo)
 def homography():
     global img_homo, width, height
     src = np.float32(point_list)

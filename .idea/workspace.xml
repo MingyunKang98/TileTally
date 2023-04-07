@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a77a73fc-25c2-4efd-a3c0-bca25700a2b9" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Joonsang.py" beforeDir="false" afterPath="$PROJECT_DIR$/Joonsang.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tile_packing.py" beforeDir="false" afterPath="$PROJECT_DIR$/tile_packing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -221,7 +220,21 @@
       <option name="project" value="LOCAL" />
       <updated>1680836284901</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Changes">
+      <created>1680840246252</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1680840246252</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Changes">
+      <created>1680840255509</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1680840255509</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
