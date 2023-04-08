@@ -162,7 +162,7 @@ def drawLines(img, lines, color=(0,0,255)):
 
 point_list = []
 new_point_list = []
-src_img = cv2.imread('.jpg')
+src_img = cv2.imread('input4.png')
 
 width = 640
 height = 640
