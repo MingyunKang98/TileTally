@@ -5,8 +5,111 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a77a73fc-25c2-4efd-a3c0-bca25700a2b9" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/results/Output/~$온장면적_정확도.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Output/온장면적_정확도.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/results/Output/온장면적_정확도.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/0. 온장면적_정확도.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/1-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/1-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/1-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/1-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/1-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/1-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/10-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/10-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/10-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/10-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/10-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/10-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/11-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/11-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/11-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/11-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/11-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/11-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/12-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/12-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/12-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/12-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/12-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/12-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/13-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/13-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/13-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/13-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/13-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/13-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/14-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/14-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/14-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/14-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/14-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/14-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/15-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/15-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/15-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/15-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/15-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/15-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/16-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/16-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/16-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/16-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/16-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/16-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/17-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/17-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/17-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/17-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/17-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/17-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/2-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/2-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/2-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/2-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/2-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/2-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/3-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/3-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/3-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/3-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/3-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/3-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/4-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/4-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/4-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/4-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/4-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/4-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/5-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/5-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/5-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/5-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/5-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/5-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/6-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/6-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/6-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/6-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/6-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/6-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/7-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/7-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/7-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/7-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/7-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/7-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/8-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/8-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/8-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/8-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/8-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/8-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/9-a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/9-b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/9-c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/9-d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/9-e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/9-f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Output/~$0. 온장면적_정확도.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -326,7 +429,21 @@
       <option name="project" value="LOCAL" />
       <updated>1680970092502</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Changes">
+      <created>1680970282032</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1680970282032</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Changes">
+      <created>1680970945386</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1680970945386</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
